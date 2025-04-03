@@ -17,7 +17,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
     }
 
     @Override
-    public List<Producto> listar() {
+    public List<Producto> listar() throws SQLException {
 
         List<Producto> productos = new ArrayList<>();
 
@@ -33,9 +33,6 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
                 productos.add(p);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
         }
 
         return productos;
@@ -43,7 +40,7 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
 
 
     @Override
-    public Producto buscarId(Long id) {
+    public Producto buscarId(Long id) throws SQLException {
 
         Producto producto = null;
 
@@ -62,15 +59,12 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
             }
             rst.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
         return producto;
     }
 
     @Override
-    public void guardar(Producto producto) {
+    public void guardar(Producto producto) throws SQLException {
 
         String sql;
         if (producto.getId() != null && producto.getId()>0) {
@@ -91,20 +85,15 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
             }
 
             stmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
-
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void eliminar(Long id) throws SQLException {
 
         try (PreparedStatement stmt = getInstance().prepareStatement("DELETE FROM productos WHERE idproductos=?")) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
